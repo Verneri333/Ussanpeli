@@ -2,7 +2,7 @@ let currentLevel = 1;
 let currentQuestion = 0;
 let totalCorrect = 0;
 const totalLevels = 8;
-const questionsPerLevel = 3; // Alkuperäisessä koodissa oli 3 kysymystä per taso
+const questionsPerLevel = 3;
 
 const levels = [
     // Taso 1
@@ -148,7 +148,7 @@ const levels = [
             options: ["Löytöretkien jälkeen lähetyssaarnaajat toivat kristinuskon", "Oseanian alkuperäiskansat kääntyivät kristinuskoon itsenäisesti", "Kristinusko levisi alueelle kauppareittien kautta", "Kristinusko syntyi Oseaniassa erillisenä uskonto-virrassa"],
             correctAnswer: 1
         }
-    ]
+    ],
 ];
 
 function loadQuestion() {
@@ -174,3 +174,33 @@ function loadQuestion() {
         }
     }
 }
+
+function checkAnswer(selectedAnswer) {
+    const currentLevelQuestions = levels[currentLevel - 1];
+    const questionData = currentLevelQuestions[currentQuestion];
+    if (selectedAnswer === questionData.correctAnswer) {
+        document.getElementById("result").innerText = "Oikein!";
+    } else {
+        document.getElementById("result").innerText = "Väärin, yritä uudelleen.";
+    }
+    document.getElementById("next").style.display = "inline-block";
+}
+
+function nextQuestion() {
+    currentQuestion++;
+    if (currentQuestion < levels[currentLevel - 1].length) {
+        loadQuestion();
+    } else {
+        if (currentLevel < totalLevels) {
+            currentLevel++;
+            currentQuestion = 0;
+            loadQuestion();
+        } else {
+            document.getElementById("question").innerText = "Onneksi olkoon, olet suorittanut pelin!";
+            document.getElementById("choices").style.display = "none";
+            document.getElementById("next").style.display = "none";
+        }
+    }
+}
+
+loadQuestion();
